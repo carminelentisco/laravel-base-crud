@@ -13,4 +13,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+// Rotta home
 Route::get('/', 'HomeController@index')->name('home');
+
+// Rotta CRUD
+Route::resource('students','StudentsCrudController');
