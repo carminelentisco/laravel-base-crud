@@ -19,7 +19,11 @@
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Add New Student</a>
+                        <a class="nav-link" href="{{ route('students.index') }}">Student List</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('students.create') }}">Add New Student</a>
                     </li>
                 </ul>
               </nav>
