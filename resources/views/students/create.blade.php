@@ -5,6 +5,7 @@
     <div class="container">
         <h1 class="mb-5">Add New Student</h1>
 
+        // Controllo delle informazioni
         @if ($errors->all())
             <div class="alert alert-danger">
                 <ul>
@@ -15,6 +16,7 @@
             </div>
         @endif
 
+        
         <form action="{{ route('students.store') }}" method="POST">
             @csrf 
             @method('POST')
@@ -40,7 +42,12 @@
             <input class="btn btn-success" type="submit" value="Create">
         </form>
         
-  
+        // Action
+        <section class="d-flex justify-content-center">
+            <a class="btn btn-primary mr-5" href="{{ route('home') }}">Return to Home</a>
+            <a class="btn btn-success mr-5" href="{{ route('students.index') }}">Return to Student List</a>
+        </section>
+
     </div>
 
 @endsection
