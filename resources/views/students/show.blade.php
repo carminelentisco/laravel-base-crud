@@ -34,9 +34,13 @@
                 </div>
                 
                 <div class="card-footer text-muted d-flex justify-content-center">
-                    <a class="badge badge-primary mr-5" href="{{ route('home') }}">Return to Home</a>
-                    <a class="badge badge-success mr-5" href="{{ route('students.index') }}">Return to Student List</a>
-                    <a class="badge badge-danger mr-5" href="{{ route('students.create') }}">Add New Students</a>
+                    <a class="btn btn-primary mr-5" href="{{ route('students.index') }}">Return to Student List</a>
+                    <a class="btn btn-primary mr-5" href="{{ route('students.create') }}">Add New Students</a>
+                    <form action="{{ route('students.destroy', $student->id) }}" method="POST">
+                        @csrf
+                        @method('DELETE')
+                        <input class="btn btn-danger" type="submit" value="DELETE">
+                    </form>
                 </div>
 
             </div> 
