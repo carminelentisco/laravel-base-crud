@@ -4,6 +4,12 @@
 
     <div class="container mb-5">
 
+        @if ( session('deleted') )
+            <div class="alert alert-success">
+                {{ session('deleted') }} is deleted
+            </div>
+        @endif
+
         <section class="card">
             <h2 class="card-header text-center mb-5">STUDENT LIST</h2>
 
@@ -16,6 +22,7 @@
                             <h5>Class:</h5>
                             <h6 class="card-subtitle mb-2 text-muted">{{ $student->class }}</h6>
                             <a href="{{ route('students.show', $student->id) }}" class="btn btn-primary">SHOW</a>
+                            <a href="{{ route('students.edit', $student->id) }}" class="btn btn-primary">EDIT</a>
                         </div>
                     </div>
                 @endforeach
