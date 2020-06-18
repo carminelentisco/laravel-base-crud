@@ -6,12 +6,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class Student extends Model
 {
-    protected $fillables = [
+    protected $fillable = [
         'name',
         'age',
         'date_of_birth',
-        'bith_place',
+        'birth_place',
         'class',
         'address_of_studies'
     ];
 }
+   
