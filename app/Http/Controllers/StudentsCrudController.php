@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Student;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class StudentsCrudController extends Controller
 {
@@ -36,25 +37,18 @@ class StudentsCrudController extends Controller
      */
     public function store(Request $request)
     {
+        // Prendo i dati
         $data = $request->all();
 
-        $request->validate([
-            'name' => 'required|string|max:20|unique:students',
-            'age' => 'required|integer',
-            'date_of_birth' => 'required',
-            'birth_place' => 'required|string|max:20',
-            'class' => 'required|string|max:3'
-        ]);
+        // Controllo dei dati
+        $request->validate($this->validateRules());
 
+        // Inizializzazione
         $student = new Student();
-        $student->name = $data['name'];
-        $student->age = $data['age'];
-        $student->date_of_birth = $data['date_of_birth'];
-        $student->birth_place = $data['birth_place'];
-        $student->class = $data['class'];
-        $student->address_of_studies = $data['address_of_studies'];
+        $student->fill($data);
         $saved = $student->save();
 
+        // Controllo salvataggio + redirect
         if ($saved) {
             $newStudent = Student::find($student->id);
             return redirect()->route('students.show',  $newStudent );
@@ -78,9 +72,9 @@ class StudentsCrudController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Student $student)
     {
-        //
+        return view('students.edit', compact('student'));
     }
 
     /**
@@ -90,9 +84,16 @@ class StudentsCrudController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Student $student)
     {
-        //
+        $data = $request->all();
+        $request->validate( $this->validateRules($student->id));
+        $updated = $student->update($data);
+
+        if ($updated) {
+            return redirect()->route('students.show',  $student->id );
+        }
+
     }
 
     /**
@@ -101,8 +102,33 @@ class StudentsCrudController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Student $student)
     {
-        //
+        $ref = $student->name;
+        $deleted = $student->delete();
+
+        if($deleted) {
+            return redirect()->route('students.index')->with('deleted', $ref);
+        }
+    }
+
+    /**
+     * Utility
+     */
+
+    private function validateRules($id = null) {
+        return [
+            // 'name' => 'required|string|max:20|unique:students',
+            'name' => [
+                'required',
+                'string',
+                'max:20',
+                Rule::unique('students')->ignore($id)
+            ],
+            'age' => 'required|integer',
+            'date_of_birth' => 'required',
+            'birth_place' => 'required|string|max:20',
+            'class' => 'required|string|max:3'
+        ];
     }
 }
